@@ -2,46 +2,28 @@ import { Testimonial } from "@/types/testimonial";
 
 const testimonialsData: Testimonial[] = [
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Davis Dorwart",
+    review: `The chef knife set arrived razor-sharp. Balance and grip are perfect for long prep sessions.`,
+    authorName: "Maria Chen",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Home Cook",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Wilson Dias",
+    review: `My Dutch oven has become the most-used pot in the kitchen. Seasoning guide on the blog was a bonus.`,
+    authorName: "James Okonkwo",
     authorImg: "/images/users/user-02.jpg",
-    authorRole: "Backend Developer",
+    authorRole: "Weekend Chef",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Miracle Exterm",
+    review: `Quality gadgets at fair prices. The silicone utensil set handles high heat without melting.`,
+    authorName: "Elena Vasquez",
     authorImg: "/images/users/user-03.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Food Blogger",
   },
   {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Thomas Frank",
+    review: `Fast shipping and thoughtful packaging. KitchenEdge is now my go-to for gifts.`,
+    authorName: "Tom Bradley",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Entrepreneur",
-  },
-  {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Dave Smith",
-    authorImg: "/images/users/user-02.jpg",
-    authorRole: "Serial Entrepreneur",
-  },
-  {
-    review: `Lorem ipsum dolor sit amet, adipiscing elit. Donec
-    malesuada justo vitaeaugue suscipit beautiful vehicula`,
-    authorName: "Davis Dorwart",
-    authorImg: "/images/users/user-03.jpg",
-    authorRole: "Serial Entrepreneur",
+    authorRole: "Catering Owner",
   },
 ];
 
