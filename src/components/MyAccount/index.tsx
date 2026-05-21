@@ -39,9 +39,9 @@ const MyAccount = () => {
 
                   <div>
                     <p className="font-medium text-dark mb-0.5">
-                      James Septimus
+                      Abebe Kebede
                     </p>
-                    <p className="text-custom-xs">Member Since Sep 2020</p>
+                    <p className="text-custom-xs">Member Since Sep 2024</p>
                   </div>
                 </div>
 
@@ -261,7 +261,7 @@ const MyAccount = () => {
               }`}
             >
               <p className="text-dark">
-                Hello Annie (not Annie?
+                Hello Abebe (not Abebe?
                 <a
                   href="#"
                   className="text-red ease-out duration-200 hover:underline"
@@ -357,7 +357,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Name: James Septimus
+                      Name: Abebe Kebede
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -376,7 +376,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Email: jamse@example.com
+                      Email: abebe@example.com
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -405,7 +405,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Phone: 1234 567890
+                      Phone: +251 911 234 567
                     </p>
 
                     <p className="flex gap-2.5 text-custom-sm">
@@ -431,7 +431,7 @@ const MyAccount = () => {
                           </clipPath>
                         </defs>
                       </svg>
-                      Address: 7398 Smoke Ranch RoadLas Vegas, Nevada 89128
+                      Address: Bole Road, near Edna Mall, Addis Ababa
                     </p>
                   </div>
                 </div>
@@ -489,7 +489,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Name: James Septimus
+                      Name: Abebe Kebede
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -508,7 +508,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Email: jamse@example.com
+                      Email: abebe@example.com
                     </p>
 
                     <p className="flex items-center gap-2.5 text-custom-sm">
@@ -537,7 +537,7 @@ const MyAccount = () => {
                           fill=""
                         />
                       </svg>
-                      Phone: 1234 567890
+                      Phone: +251 911 234 567
                     </p>
 
                     <p className="flex gap-2.5 text-custom-sm">
@@ -563,7 +563,7 @@ const MyAccount = () => {
                           </clipPath>
                         </defs>
                       </svg>
-                      Address: 7398 Smoke Ranch RoadLas Vegas, Nevada 89128
+                      Address: Bole Road, near Edna Mall, Addis Ababa
                     </p>
                   </div>
                 </div>
@@ -589,8 +589,8 @@ const MyAccount = () => {
                         type="text"
                         name="firstName"
                         id="firstName"
-                        placeholder="Jhon"
-                        value="Jhon"
+                        placeholder="Abebe"
+                        defaultValue="Abebe"
                         className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                       />
                     </div>
@@ -604,8 +604,8 @@ const MyAccount = () => {
                         type="text"
                         name="lastName"
                         id="lastName"
-                        placeholder="Deo"
-                        value="Deo"
+                        placeholder="Kebede"
+                        defaultValue="Kebede"
                         className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                       />
                     </div>
@@ -617,10 +617,11 @@ const MyAccount = () => {
                     </label>
 
                     <div className="relative">
-                      <select className="w-full bg-gray-1 rounded-md border border-gray-3 text-dark-4 py-3 pl-5 pr-9 duration-200 appearance-none outline-none focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20">
-                        <option value="0">Australia</option>
-                        <option value="1">America</option>
-                        <option value="2">England</option>
+                      <select
+                        defaultValue="ethiopia"
+                        className="w-full bg-gray-1 rounded-md border border-gray-3 text-dark-4 py-3 pl-5 pr-9 duration-200 appearance-none outline-none focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
+                      >
+                        <option value="ethiopia">Ethiopia</option>
                       </select>
 
                       <span className="absolute right-4 top-1/2 -translate-y-1/2 text-dark-4">
