@@ -9,6 +9,7 @@ import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
+import { formatPrice } from "@/lib/formatPrice";
 import Image from "next/image";
 
 const SingleListItem = ({ item }: { item: Product }) => {
@@ -116,8 +117,8 @@ const SingleListItem = ({ item }: { item: Product }) => {
             </h3>
 
             <span className="flex items-center gap-2 font-medium text-lg">
-              <span className="text-dark">${item.discountedPrice}</span>
-              <span className="text-dark-4 line-through">${item.price}</span>
+              <span className="text-dark">{formatPrice(item.discountedPrice)}</span>
+              <span className="text-dark-4 line-through">{formatPrice(item.price)}</span>
             </span>
           </div>
 
