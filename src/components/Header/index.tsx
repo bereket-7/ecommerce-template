@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
+import { siteConfig } from "@/lib/siteConfig";
+import { shopCategories } from "@/lib/categories";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,14 +39,11 @@ const Header = () => {
   });
 
   const options = [
-    { label: "All Categories", value: "0" },
-    { label: "Desktop", value: "1" },
-    { label: "Laptop", value: "2" },
-    { label: "Monitor", value: "3" },
-    { label: "Phone", value: "4" },
-    { label: "Watch", value: "5" },
-    { label: "Mouse", value: "6" },
-    { label: "Tablet", value: "7" },
+    { label: "All Categories", value: "all" },
+    ...shopCategories.map((c) => ({
+      label: c.title,
+      value: c.slug,
+    })),
   ];
 
   return (
@@ -64,10 +63,10 @@ const Header = () => {
           <div className="xl:w-auto flex-col sm:flex-row w-full flex sm:justify-between sm:items-center gap-5 sm:gap-10">
             <Link className="flex-shrink-0" href="/">
               <Image
-                src="/images/logo/logo.svg"
-                alt="Logo"
-                width={219}
-                height={36}
+                src={siteConfig.logo.src}
+                alt={siteConfig.logo.alt}
+                width={siteConfig.logo.width}
+                height={siteConfig.logo.height}
               />
             </Link>
 
@@ -85,7 +84,7 @@ const Header = () => {
                       type="search"
                       name="search"
                       id="search"
-                      placeholder="I am shopping for..."
+                      placeholder={siteConfig.searchPlaceholder}
                       autoComplete="off"
                       className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                     />

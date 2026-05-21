@@ -1,26 +1,28 @@
 import React from "react";
 import Image from "next/image";
 
+import { siteConfig } from "@/lib/siteConfig";
+
 const featureData = [
   {
     img: "/images/icons/icon-01.svg",
     title: "Free Shipping",
-    description: "For all orders $200",
+    description: `On orders over $${siteConfig.shipping.freeThreshold}`,
   },
   {
     img: "/images/icons/icon-02.svg",
-    title: "1 & 1 Returns",
-    description: "Cancellation after 1 day",
+    title: "Easy Returns",
+    description: "30-day hassle-free returns",
   },
   {
     img: "/images/icons/icon-03.svg",
-    title: "100% Secure Payments",
-    description: "Gurantee secure payments",
+    title: "Secure Checkout",
+    description: "Your payment data is protected",
   },
   {
     img: "/images/icons/icon-04.svg",
-    title: "24/7 Dedicated Support",
-    description: "Anywhere & anytime",
+    title: "Kitchen Experts",
+    description: "Product advice when you need it",
   },
 ];
 
