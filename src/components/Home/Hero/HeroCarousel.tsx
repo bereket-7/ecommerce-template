@@ -11,17 +11,17 @@ const slides = [
   {
     title: "Professional Chef Knife Sets",
     description:
-      "Sharp, balanced blades for everyday prep and special occasions. Free shipping on orders over $" +
-      siteConfig.shipping.freeThreshold,
+      "Sharp, balanced blades for everyday prep and injera cooking. " +
+      siteConfig.shipping.message,
     cta: "Shop Knives",
     href: "/shop-with-sidebar?category=knives-cutting",
     image: "/images/hero/hero-01.png",
     alt: "Chef knife set",
   },
   {
-    title: "Cookware That Lasts a Lifetime",
+    title: "Cookware for Ethiopian Kitchens",
     description:
-      "From cast iron Dutch ovens to non-stick skillets — build your dream kitchen one piece at a time.",
+      "From cast iron Dutch ovens to mitad-friendly tools — build your dream kitchen one piece at a time.",
     cta: "Shop Cookware",
     href: "/shop-with-sidebar?category=cookware",
     image: "/images/hero/hero-01.png",

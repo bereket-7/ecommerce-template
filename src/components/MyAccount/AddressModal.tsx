@@ -1,8 +1,11 @@
 import React, { useEffect } from "react";
+import { nameExamples, phonePlaceholder, sampleAddresses } from "@/lib/ethiopia";
+import { siteConfig } from "@/lib/siteConfig";
 
 const AddressModal = ({ isOpen, closeModal }) => {
+  const sample = sampleAddresses[0];
+
   useEffect(() => {
-    // closing modal while clicking outside
     function handleClickOutside(event) {
       if (!event.target.closest(".modal-content")) {
         closeModal();
@@ -61,7 +64,7 @@ const AddressModal = ({ isOpen, closeModal }) => {
                   <input
                     type="text"
                     name="name"
-                    value="James Septimus"
+                    defaultValue={nameExamples.fullName}
                     className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
                 </div>
@@ -74,7 +77,7 @@ const AddressModal = ({ isOpen, closeModal }) => {
                   <input
                     type="email"
                     name="email"
-                    value="jamse@example.com"
+                    defaultValue={siteConfig.contact.email}
                     className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
                 </div>
@@ -89,7 +92,8 @@ const AddressModal = ({ isOpen, closeModal }) => {
                   <input
                     type="text"
                     name="phone"
-                    value="1234 567890"
+                    defaultValue={siteConfig.contact.phone}
+                    placeholder={phonePlaceholder}
                     className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
                 </div>
@@ -102,7 +106,7 @@ const AddressModal = ({ isOpen, closeModal }) => {
                   <input
                     type="text"
                     name="address"
-                    value="7398 Smoke Ranch RoadLas Vegas, Nevada 89128"
+                    defaultValue={`${sample.line}, ${sample.city}`}
                     className="rounded-md border border-gray-3 bg-gray-1 placeholder:text-dark-5 w-full py-2.5 px-5 outline-none duration-200 focus:border-transparent focus:shadow-input focus:ring-2 focus:ring-blue/20"
                   />
                 </div>

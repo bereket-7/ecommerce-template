@@ -11,6 +11,7 @@ import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
 import Image from "next/image";
 import { siteConfig } from "@/lib/siteConfig";
 import { shopCategories } from "@/lib/categories";
+import { formatPrice } from "@/lib/formatPrice";
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -147,7 +148,7 @@ const Header = () => {
                   24/7 SUPPORT
                 </span>
                 <p className="font-medium text-custom-sm text-dark">
-                  (+965) 7492-3477
+                  {siteConfig.contact.phone}
                 </p>
               </div>
             </div>
@@ -235,7 +236,7 @@ const Header = () => {
                       cart
                     </span>
                     <p className="font-medium text-custom-sm text-dark">
-                      ${totalPrice}
+                      {formatPrice(totalPrice)}
                     </p>
                   </div>
                 </button>

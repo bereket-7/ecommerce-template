@@ -2,28 +2,28 @@ import { Testimonial } from "@/types/testimonial";
 
 const testimonialsData: Testimonial[] = [
   {
-    review: `The chef knife set arrived razor-sharp. Balance and grip are perfect for long prep sessions.`,
-    authorName: "Maria Chen",
+    review: `The chef knife set arrived razor-sharp. Perfect for daily wot prep and injera cooking in our Bole kitchen.`,
+    authorName: "Sara Tadesse",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Home Cook",
+    authorRole: "Home cook, Addis Ababa",
   },
   {
-    review: `My Dutch oven has become the most-used pot in the kitchen. Seasoning guide on the blog was a bonus.`,
-    authorName: "James Okonkwo",
+    review: `Our restaurant in Hawassa uses the Dutch oven daily for shiro and doro wot. Built to last and heats evenly.`,
+    authorName: "Daniel Haile",
     authorImg: "/images/users/user-02.jpg",
-    authorRole: "Weekend Chef",
+    authorRole: "Restaurant owner, Hawassa",
   },
   {
-    review: `Quality gadgets at fair prices. The silicone utensil set handles high heat without melting.`,
-    authorName: "Elena Vasquez",
+    review: `The coffee ceremony set made hosting bunna at home so much easier. Fast delivery to Kazanchis.`,
+    authorName: "Meron Assefa",
     authorImg: "/images/users/user-03.jpg",
-    authorRole: "Food Blogger",
+    authorRole: "Food blogger, Addis Ababa",
   },
   {
-    review: `Fast shipping and thoughtful packaging. KitchenEdge is now my go-to for gifts.`,
-    authorName: "Tom Bradley",
+    review: `Quality gadgets at fair prices in ETB. Telebirr checkout flow was smooth — great for Ethiopian shoppers.`,
+    authorName: "Yonas Bekele",
     authorImg: "/images/users/user-01.jpg",
-    authorRole: "Catering Owner",
+    authorRole: "Catering owner, Addis Ababa",
   },
 ];
 

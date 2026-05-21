@@ -3,6 +3,7 @@ import HeroCarousel from "./HeroCarousel";
 import HeroFeature from "./HeroFeature";
 import Image from "next/image";
 import Link from "next/link";
+import { formatPrice } from "@/lib/formatPrice";
 
 const Hero = () => {
   return (
@@ -29,7 +30,7 @@ const Hero = () => {
                   <div>
                     <h2 className="max-w-[180px] font-semibold text-dark text-xl mb-20">
                       <Link href="/shop-with-sidebar?category=cookware">
-                        Enameled Dutch Oven 6-Qt
+                        Cast Iron Dutch Oven 6-Qt
                       </Link>
                     </h2>
                     <div>
@@ -38,10 +39,10 @@ const Hero = () => {
                       </p>
                       <span className="flex items-center gap-3">
                         <span className="font-medium text-heading-5 text-red">
-                          $99
+                          {formatPrice(5650)}
                         </span>
                         <span className="font-medium text-2xl text-dark-4 line-through">
-                          $129
+                          {formatPrice(7360)}
                         </span>
                       </span>
                     </div>
@@ -70,10 +71,10 @@ const Hero = () => {
                       </p>
                       <span className="flex items-center gap-3">
                         <span className="font-medium text-heading-5 text-red">
-                          $149
+                          {formatPrice(8500)}
                         </span>
                         <span className="font-medium text-2xl text-dark-4 line-through">
-                          $189
+                          {formatPrice(10780)}
                         </span>
                       </span>
                     </div>
