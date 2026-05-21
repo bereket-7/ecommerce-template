@@ -1,89 +1,53 @@
 "use client";
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
 import Image from "next/image";
 import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
+import { Product } from "@/types/product";
+import { getColorHex } from "@/lib/colorMap";
+
+const tabs = [
+  { id: "tabOne", title: "Description" },
+  { id: "tabTwo", title: "Specifications" },
+  { id: "tabThree", title: "Reviews" },
+];
 
 const ShopDetails = () => {
-  const [activeColor, setActiveColor] = useState("blue");
   const { openPreviewModal } = usePreviewSlider();
   const [previewImg, setPreviewImg] = useState(0);
-
-  const [storage, setStorage] = useState("gb128");
-  const [type, setType] = useState("active");
-  const [sim, setSim] = useState("dual");
+  const [activeColor, setActiveColor] = useState("");
+  const [selectedSet, setSelectedSet] = useState("");
   const [quantity, setQuantity] = useState(1);
-
   const [activeTab, setActiveTab] = useState("tabOne");
 
-  const storages = [
-    {
-      id: "gb128",
-      title: "128 GB",
-    },
-    {
-      id: "gb256",
-      title: "256 GB",
-    },
-    {
-      id: "gb512",
-      title: "521 GB",
-    },
-  ];
-
-  const types = [
-    {
-      id: "active",
-      title: "Active",
-    },
-
-    {
-      id: "inactive",
-      title: "Inactive",
-    },
-  ];
-
-  const sims = [
-    {
-      id: "dual",
-      title: "Dual",
-    },
-
-    {
-      id: "e-sim",
-      title: "E Sim",
-    },
-  ];
-
-  const tabs = [
-    {
-      id: "tabOne",
-      title: "Description",
-    },
-    {
-      id: "tabTwo",
-      title: "Additional Information",
-    },
-    {
-      id: "tabThree",
-      title: "Reviews",
-    },
-  ];
-
-  const colors = ["red", "blue", "orange", "pink", "purple"];
-
-  const alreadyExist = localStorage.getItem("productDetails");
   const productFromStorage = useAppSelector(
     (state) => state.productDetailsReducer.value
   );
 
-  const product = alreadyExist ? JSON.parse(alreadyExist) : productFromStorage;
+  const [product, setProduct] = useState<Product>(productFromStorage);
 
   useEffect(() => {
-    localStorage.setItem("productDetails", JSON.stringify(product));
+    const stored = localStorage.getItem("productDetails");
+    if (stored) {
+      try {
+        setProduct(JSON.parse(stored));
+      } catch {
+        setProduct(productFromStorage);
+      }
+    } else {
+      setProduct(productFromStorage);
+    }
+  }, [productFromStorage]);
+
+  useEffect(() => {
+    if (product?.title) {
+      localStorage.setItem("productDetails", JSON.stringify(product));
+      if (product.colors?.length) setActiveColor(product.colors[0]);
+      if (product.setOptions?.length) setSelectedSet(product.setOptions[0].id);
+    }
   }, [product]);
 
   // pass the product here when you get the real data.
@@ -95,8 +59,10 @@ const ShopDetails = () => {
     <>
       <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
 
-      {product.title === "" ? (
-        "Please add product"
+      {!product?.title ? (
+        <p className="py-20 text-center text-dark">
+          Please select a product from the shop.
+        </p>
       ) : (
         <>
           <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28">
@@ -366,41 +332,41 @@ const ShopDetails = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Sales 30% Off Use Code: PROMO30
+                      Free shipping over $75 — Use code: KITCHEN25
                     </li>
                   </ul>
 
                   <form onSubmit={(e) => e.preventDefault()}>
                     <div className="flex flex-col gap-4.5 border-y border-gray-3 mt-7.5 mb-9 py-9">
-                      {/* <!-- details item --> */}
+                      {product.colors && product.colors.length > 0 && (
                       <div className="flex items-center gap-4">
                         <div className="min-w-[65px]">
                           <h4 className="font-medium text-dark">Color:</h4>
                         </div>
 
                         <div className="flex items-center gap-2.5">
-                          {colors.map((color, key) => (
+                          {product.colors.map((color, key) => (
                             <label
                               key={key}
-                              htmlFor={color}
+                              htmlFor={`pd-color-${color}`}
                               className="cursor-pointer select-none flex items-center"
                             >
                               <div className="relative">
                                 <input
                                   type="radio"
                                   name="color"
-                                  id={color}
+                                  id={`pd-color-${color}`}
                                   className="sr-only"
                                   onChange={() => setActiveColor(color)}
                                 />
                                 <div
                                   className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${activeColor === color && "border"
                                     }`}
-                                  style={{ borderColor: `${color}` }}
+                                  style={{ borderColor: getColorHex(color) }}
                                 >
                                   <span
                                     className="block w-3 h-3 rounded-full"
-                                    style={{ backgroundColor: `${color}` }}
+                                    style={{ backgroundColor: getColorHex(color) }}
                                   ></span>
                                 </div>
                               </div>
@@ -408,15 +374,16 @@ const ShopDetails = () => {
                           ))}
                         </div>
                       </div>
+                      )}
 
-                      {/* <!-- details item --> */}
+                      {product.setOptions && product.setOptions.length > 0 && (
                       <div className="flex items-center gap-4">
                         <div className="min-w-[65px]">
-                          <h4 className="font-medium text-dark">Storage:</h4>
+                          <h4 className="font-medium text-dark">Set:</h4>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                          {storages.map((item, key) => (
+                        <div className="flex items-center gap-4 flex-wrap">
+                          {product.setOptions.map((item, key) => (
                             <label
                               key={key}
                               htmlFor={item.id}
@@ -428,19 +395,18 @@ const ShopDetails = () => {
                                   name="storage"
                                   id={item.id}
                                   className="sr-only"
-                                  onChange={() => setStorage(item.id)}
+                                  onChange={() => setSelectedSet(item.id)}
                                 />
 
-                                {/*  */}
                                 <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${storage === item.id
+                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${selectedSet === item.id
                                     ? "border-blue bg-blue"
                                     : "border-gray-4"
                                     } `}
                                 >
                                   <span
                                     className={
-                                      storage === item.id
+                                      selectedSet === item.id
                                         ? "opacity-100"
                                         : "opacity-0"
                                     }
@@ -475,140 +441,16 @@ const ShopDetails = () => {
                           ))}
                         </div>
                       </div>
+                      )}
 
-                      {/* // <!-- details item --> */}
+                      {product.material && (
                       <div className="flex items-center gap-4">
                         <div className="min-w-[65px]">
-                          <h4 className="font-medium text-dark">Type:</h4>
+                          <h4 className="font-medium text-dark">Material:</h4>
                         </div>
-
-                        <div className="flex items-center gap-4">
-                          {types.map((item, key) => (
-                            <label
-                              key={key}
-                              htmlFor={item.id}
-                              className="flex cursor-pointer select-none items-center"
-                            >
-                              <div className="relative">
-                                <input
-                                  type="checkbox"
-                                  name="storage"
-                                  id={item.id}
-                                  className="sr-only"
-                                  onChange={() => setType(item.id)}
-                                />
-
-                                {/*  */}
-                                <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${type === item.id
-                                    ? "border-blue bg-blue"
-                                    : "border-gray-4"
-                                    } `}
-                                >
-                                  <span
-                                    className={
-                                      type === item.id
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    }
-                                  >
-                                    <svg
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <rect
-                                        x="4"
-                                        y="4.00006"
-                                        width="16"
-                                        height="16"
-                                        rx="4"
-                                        fill="#3C50E0"
-                                      />
-                                      <path
-                                        fillRule="evenodd"
-                                        clipRule="evenodd"
-                                        d="M16.3103 9.25104C16.471 9.41178 16.5612 9.62978 16.5612 9.85707C16.5612 10.0844 16.471 10.3024 16.3103 10.4631L12.0243 14.7491C11.8635 14.9098 11.6455 15.0001 11.4182 15.0001C11.191 15.0001 10.973 14.9098 10.8122 14.7491L8.24062 12.1775C8.08448 12.0158 7.99808 11.7993 8.00003 11.5745C8.00199 11.3498 8.09214 11.1348 8.25107 10.9759C8.41 10.8169 8.62499 10.7268 8.84975 10.7248C9.0745 10.7229 9.29103 10.8093 9.4527 10.9654L11.4182 12.931L15.0982 9.25104C15.2589 9.09034 15.4769 9.00006 15.7042 9.00006C15.9315 9.00006 16.1495 9.09034 16.3103 9.25104Z"
-                                        fill="white"
-                                      />
-                                    </svg>
-                                  </span>
-                                </div>
-                              </div>
-                              {item.title}
-                            </label>
-                          ))}
-                        </div>
+                        <p className="text-dark">{product.material}</p>
                       </div>
-
-                      {/* // <!-- details item --> */}
-                      <div className="flex items-center gap-4">
-                        <div className="min-w-[65px]">
-                          <h4 className="font-medium text-dark">Sim:</h4>
-                        </div>
-
-                        <div className="flex items-center gap-4">
-                          {sims.map((item, key) => (
-                            <label
-                              key={key}
-                              htmlFor={item.id}
-                              className="flex cursor-pointer select-none items-center"
-                            >
-                              <div className="relative">
-                                <input
-                                  type="checkbox"
-                                  name="storage"
-                                  id={item.id}
-                                  className="sr-only"
-                                  onChange={() => setSim(item.id)}
-                                />
-
-                                {/*  */}
-                                <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${sim === item.id
-                                    ? "border-blue bg-blue"
-                                    : "border-gray-4"
-                                    } `}
-                                >
-                                  <span
-                                    className={
-                                      sim === item.id
-                                        ? "opacity-100"
-                                        : "opacity-0"
-                                    }
-                                  >
-                                    <svg
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <rect
-                                        x="4"
-                                        y="4.00006"
-                                        width="16"
-                                        height="16"
-                                        rx="4"
-                                        fill="#3C50E0"
-                                      />
-                                      <path
-                                        fillRule="evenodd"
-                                        clipRule="evenodd"
-                                        d="M16.3103 9.25104C16.471 9.41178 16.5612 9.62978 16.5612 9.85707C16.5612 10.0844 16.471 10.3024 16.3103 10.4631L12.0243 14.7491C11.8635 14.9098 11.6455 15.0001 11.4182 15.0001C11.191 15.0001 10.973 14.9098 10.8122 14.7491L8.24062 12.1775C8.08448 12.0158 7.99808 11.7993 8.00003 11.5745C8.00199 11.3498 8.09214 11.1348 8.25107 10.9759C8.41 10.8169 8.62499 10.7268 8.84975 10.7248C9.0745 10.7229 9.29103 10.8093 9.4527 10.9654L11.4182 12.931L15.0982 9.25104C15.2589 9.09034 15.4769 9.00006 15.7042 9.00006C15.9315 9.00006 16.1495 9.09034 16.3103 9.25104Z"
-                                        fill="white"
-                                      />
-                                    </svg>
-                                  </span>
-                                </div>
-                              </div>
-                              {item.title}
-                            </label>
-                          ))}
-                        </div>
-                      </div>
+                      )}
                     </div>
 
                     <div className="flex flex-wrap items-center gap-4.5">
@@ -726,44 +568,28 @@ const ShopDetails = () => {
                 >
                   <div className="max-w-[670px] w-full">
                     <h2 className="font-medium text-2xl text-dark mb-7">
-                      Specifications:
+                      Description
                     </h2>
-
-                    <p className="mb-6">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the
-                      industry&apos;s standard dummy text ever since the 1500s,
-                      when an unknown printer took a galley of type and
-                      scrambled it to make a type specimen book.
-                    </p>
-                    <p className="mb-6">
-                      It has survived not only five centuries, but also the leap
-                      into electronic typesetting, remaining essentially
-                      unchanged. It was popularised in the 1960s.
-                    </p>
-                    <p>
-                      with the release of Letraset sheets containing Lorem Ipsum
-                      passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions.
-                    </p>
+                    <p className="mb-6">{product.description}</p>
+                    {product.brand && (
+                      <p className="text-dark-4">
+                        Brand: <span className="text-dark">{product.brand}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div className="max-w-[447px] w-full">
                     <h2 className="font-medium text-2xl text-dark mb-7">
-                      Care & Maintenance:
+                      Care &amp; Maintenance
                     </h2>
-
                     <p className="mb-6">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the
-                      industry&apos;s standard dummy text ever since the 1500s,
-                      when an unknown printer took a galley of type and
-                      scrambled it to make a type specimen book.
+                      Follow manufacturer guidelines for cleaning and storage.
+                      Most stainless steel and silicone tools are dishwasher-safe
+                      unless noted on the packaging.
                     </p>
                     <p>
-                      It has survived not only five centuries, but also the leap
-                      into electronic typesetting, remaining essentially
-                      unchanged. It was popularised in the 1960s.
+                      Knives should be hand-washed and dried immediately. Store
+                      cast iron seasoned and dry to prevent rust.
                     </p>
                   </div>
                 </div>
@@ -776,138 +602,48 @@ const ShopDetails = () => {
                   className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabTwo" ? "block" : "hidden"
                     }`}
                 >
-                  {/* <!-- info item --> */}
+                  {product.brand && (
+                    <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
+                      <div className="max-w-[450px] min-w-[140px] w-full">
+                        <p className="text-sm sm:text-base text-dark">Brand</p>
+                      </div>
+                      <div className="w-full">
+                        <p className="text-sm sm:text-base text-dark">{product.brand}</p>
+                      </div>
+                    </div>
+                  )}
                   <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
                     <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">Brand</p>
+                      <p className="text-sm sm:text-base text-dark">Category</p>
                     </div>
                     <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">Apple</p>
+                      <p className="text-sm sm:text-base text-dark">{product.category}</p>
                     </div>
                   </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">Model</p>
+                  {product.material && (
+                    <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
+                      <div className="max-w-[450px] min-w-[140px] w-full">
+                        <p className="text-sm sm:text-base text-dark">Material</p>
+                      </div>
+                      <div className="w-full">
+                        <p className="text-sm sm:text-base text-dark">{product.material}</p>
+                      </div>
                     </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        iPhone 14 Plus
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Display Size
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        6.7 inches
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Display Type
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Super Retina XDR OLED, HDR10, Dolby Vision, 800 nits
-                        (HBM), 1200 nits (peak)
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Display Resolution
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        1284 x 2778 pixels, 19.5:9 ratio
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">Chipset</p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Apple A15 Bionic (5 nm)
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">Memory</p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        128GB 6GB RAM | 256GB 6GB RAM | 512GB 6GB RAM
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Main Camera
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        12MP + 12MP | 4K@24/25/30/60fps, stereo sound rec.
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Selfie Camera
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        12 MP | 4K@24/25/30/60fps, 1080p@25/30/60/120fps,
-                        gyro-EIS
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* <!-- info item --> */}
-                  <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
-                    <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Battery Info
-                      </p>
-                    </div>
-                    <div className="w-full">
-                      <p className="text-sm sm:text-base text-dark">
-                        Li-Ion 4323 mAh, non-removable | 15W wireless (MagSafe),
-                        7.5W wireless (Qi)
-                      </p>
-                    </div>
-                  </div>
+                  )}
+                  {product.specs &&
+                    Object.entries(product.specs).map(([key, value]) => (
+                      <div
+                        key={key}
+                        className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5"
+                      >
+                        <div className="max-w-[450px] min-w-[140px] w-full">
+                          <p className="text-sm sm:text-base text-dark">{key}</p>
+                        </div>
+                        <div className="w-full">
+                          <p className="text-sm sm:text-base text-dark">{value}</p>
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </div>
               {/* <!-- tab content two end --> */}

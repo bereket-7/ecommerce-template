@@ -1,11 +1,24 @@
 "use client";
 import React, { useState } from "react";
+import { getColorHex } from "@/lib/colorMap";
+import type { FilterOptionItem } from "./FilterCheckboxDropdown";
 
-const ColorsDropdwon = () => {
+type Props = {
+  colors: FilterOptionItem[];
+  selected: string[];
+  onChange: (selected: string[]) => void;
+};
+
+const ColorsDropdwon = ({ colors, selected, onChange }: Props) => {
   const [toggleDropdown, setToggleDropdown] = useState(true);
-  const [activeColor, setActiveColor] = useState("blue");
 
-  const colors = ["red", "blue", "orange", "pink", "purple"];
+  const toggle = (color: string) => {
+    if (selected.includes(color)) {
+      onChange(selected.filter((c) => c !== color));
+    } else {
+      onChange([...selected, color]);
+    }
+  };
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -17,6 +30,7 @@ const ColorsDropdwon = () => {
       >
         <p className="text-dark">Colors</p>
         <button
+          type="button"
           aria-label="button for colors dropdown"
           className={`text-dark ease-out duration-200 ${
             toggleDropdown && "rotate-180"
@@ -40,39 +54,31 @@ const ColorsDropdwon = () => {
         </button>
       </div>
 
-      {/* <!-- dropdown menu --> */}
       <div
         className={`flex-wrap gap-2.5 p-6 ${
           toggleDropdown ? "flex" : "hidden"
         }`}
       >
-        {colors.map((color, key) => (
-          <label
-            key={key}
-            htmlFor={color}
+        {colors.map((color) => (
+          <button
+            key={color.name}
+            type="button"
+            onClick={() => toggle(color.name)}
             className="cursor-pointer select-none flex items-center"
+            title={color.name}
           >
-            <div className="relative">
-              <input
-                type="radio"
-                name="color"
-                id={color}
-                className="sr-only"
-                onChange={() => setActiveColor(color)}
+            <div
+              className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
+                selected.includes(color.name) ? "border-2" : ""
+              }`}
+              style={{ borderColor: getColorHex(color.name) }}
+            >
+              <span
+                className="block w-3 h-3 rounded-full capitalize"
+                style={{ backgroundColor: getColorHex(color.name) }}
               />
-              <div
-                className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
-                  activeColor === color && "border"
-                }`}
-                style={{ borderColor: `${color}` }}
-              >
-                <span
-                  className="block w-3 h-3 rounded-full"
-                  style={{ backgroundColor: `${color}` }}
-                ></span>
-              </div>
             </div>
-          </label>
+          </button>
         ))}
       </div>
     </div>
