@@ -8,7 +8,7 @@ const CounDown = () => {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
 
-  const deadline = "December, 31, 2026";
+  const deadline = "September, 11, 2026";
 
   const getTime = () => {
     const time = Date.parse(deadline) - Date.now();
@@ -36,10 +36,13 @@ const CounDown = () => {
             </span>
 
             <h2 className="font-bold text-dark text-xl lg:text-heading-4 xl:text-heading-3 mb-3">
-              Spring Kitchen Sale
+              Ethiopian New Year Kitchen Sale
             </h2>
 
-            <p>Save on knives, cookware, and gadgets — limited-time offers.</p>
+            <p>
+              Save on knives, mitad tools, and coffee gear — limited-time offers
+              in ETB across Addis Ababa.
+            </p>
 
             {/* <!-- Countdown timer --> */}
             <div

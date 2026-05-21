@@ -6,8 +6,8 @@ import { siteConfig } from "@/lib/siteConfig";
 const featureData = [
   {
     img: "/images/icons/icon-01.svg",
-    title: "Free Shipping",
-    description: `On orders over $${siteConfig.shipping.freeThreshold}`,
+    title: "Free Delivery",
+    description: siteConfig.shipping.message,
   },
   {
     img: "/images/icons/icon-02.svg",
@@ -17,7 +17,7 @@ const featureData = [
   {
     img: "/images/icons/icon-03.svg",
     title: "Secure Checkout",
-    description: "Your payment data is protected",
+    description: "Telebirr, CBE Birr, or cash on delivery",
   },
   {
     img: "/images/icons/icon-04.svg",
