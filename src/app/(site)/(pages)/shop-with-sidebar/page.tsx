@@ -4,7 +4,8 @@ import ShopWithSidebar from "@/components/ShopWithSidebar";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Shop Page",
-  description: "This is Shop Page for KitchenEdge Template",
+  description:
+    "Browse kitchen tools in ETB. Filter by category, brand, and price. Delivery in Addis Ababa and across Ethiopia.",
   // other metadata
 };
 

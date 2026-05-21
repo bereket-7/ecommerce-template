@@ -95,7 +95,7 @@ const BlogDetails = () => {
                 </div>
 
                 <div>
-                  <h4 className="text-dark text-custom-sm">Jhon Drineo</h4>
+                  <h4 className="text-dark text-custom-sm">Sara Tadesse</h4>
                   <p className="text-custom-xs">Entroprenor</p>
                 </div>
               </a>
