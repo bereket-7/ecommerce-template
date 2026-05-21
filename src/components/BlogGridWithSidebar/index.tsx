@@ -9,9 +9,11 @@ import Categories from "../Blog/Categories";
 import shopData from "../Shop/shopData";
 
 const blogCategories = [
+  { name: "Coffee", products: 1 },
+  { name: "Traditional", products: 1 },
+  { name: "Tips", products: 2 },
   { name: "Knives", products: 2 },
   { name: "Cookware", products: 2 },
-  { name: "Tips", products: 2 },
   { name: "Recipes", products: 1 },
   { name: "Storage", products: 1 },
 ];
