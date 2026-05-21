@@ -1,27 +1,40 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Breadcrumb from "../Common/Breadcrumb";
-
 import SingleGridItem from "../Shop/SingleGridItem";
 import SingleListItem from "../Shop/SingleListItem";
 import CustomSelect from "../ShopWithSidebar/CustomSelect";
-
 import shopData from "../Shop/shopData";
+import { filterProducts, type ProductFilters } from "@/lib/filterProducts";
 
 const ShopWithoutSidebar = () => {
   const [productStyle, setProductStyle] = useState("grid");
+  const [sort, setSort] = useState<ProductFilters["sort"]>("latest");
 
   const options = [
-    { label: "Latest Products", value: "0" },
-    { label: "Best Selling", value: "1" },
-    { label: "Old Products", value: "2" },
+    { label: "Latest Products", value: "latest" },
+    { label: "Best Selling", value: "best-selling" },
+    { label: "Price: Low to High", value: "price-low" },
+    { label: "Price: High to Low", value: "price-high" },
   ];
+
+  const filteredProducts = useMemo(
+    () =>
+      filterProducts(shopData, {
+        categories: [],
+        brands: [],
+        materials: [],
+        colors: [],
+        sort,
+      }),
+    [sort]
+  );
 
   return (
     <>
       <Breadcrumb
-        title={"Explore All Products"}
-        pages={["shop", "/", "shop without sidebar"]}
+        title={"Kitchen Tools Shop"}
+        pages={["shop"]}
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -32,10 +45,16 @@ const ShopWithoutSidebar = () => {
                 <div className="flex items-center justify-between">
                   {/* <!-- top bar left --> */}
                   <div className="flex flex-wrap items-center gap-4">
-                    <CustomSelect options={options} />
+                    <CustomSelect
+                      options={options}
+                      onChange={(v) => setSort(v as ProductFilters["sort"])}
+                    />
 
                     <p>
-                      Showing <span className="text-dark">9 of 50</span>{" "}
+                      Showing{" "}
+                      <span className="text-dark">
+                        {filteredProducts.length} of {shopData.length}
+                      </span>{" "}
                       Products
                     </p>
                   </div>
@@ -129,7 +148,7 @@ const ShopWithoutSidebar = () => {
                     : "flex flex-col gap-7.5"
                 }`}
               >
-                {shopData.map((item, key) =>
+                {filteredProducts.map((item, key) =>
                   productStyle === "grid" ? (
                     <SingleGridItem item={item} key={key} />
                   ) : (
