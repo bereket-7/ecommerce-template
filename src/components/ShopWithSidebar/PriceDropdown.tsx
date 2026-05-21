@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
+import { siteConfig } from "@/lib/siteConfig";
 
 type Props = {
   min: number;
@@ -62,16 +63,16 @@ const PriceDropdown = ({ min, max, value, onChange }: Props) => {
             <div className="price-amount flex items-center justify-between pt-4">
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  {siteConfig.currency.code}
                 </span>
-                <span className="block px-3 py-1.5">{value[0]}</span>
+                <span className="block px-3 py-1.5">{value[0].toLocaleString()}</span>
               </div>
 
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  {siteConfig.currency.code}
                 </span>
-                <span className="block px-3 py-1.5">{value[1]}</span>
+                <span className="block px-3 py-1.5">{value[1].toLocaleString()}</span>
               </div>
             </div>
           </div>

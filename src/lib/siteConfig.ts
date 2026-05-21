@@ -1,9 +1,15 @@
 export const siteConfig = {
   name: "KitchenEdge",
-  tagline: "Professional kitchen tools for home cooks and chefs",
+  tagline: "Quality kitchen tools for Ethiopian homes",
   description:
-    "Shop knives, cookware, gadgets, and storage essentials. Quality kitchen tools with fast shipping and expert support.",
-  url: "https://kitchenedge.example.com",
+    "Shop knives, cookware, gadgets, and storage essentials. Delivery across Addis Ababa and major Ethiopian cities.",
+  url: "https://kitchenedge.et",
+  locale: "en-ET",
+  country: "Ethiopia",
+  currency: {
+    code: "ETB",
+    symbol: "Br",
+  },
   logo: {
     src: "/images/logo/logo.svg",
     alt: "KitchenEdge",
@@ -11,10 +17,10 @@ export const siteConfig = {
     height: 36,
   },
   contact: {
-    name: "Sarah Mitchell",
-    address: "284 Culinary Lane, Portland, OR 97201, United States",
-    phone: "(503) 555-0142",
-    email: "hello@kitchenedge.com",
+    name: "Hanna Bekele",
+    address: "Bole Road, near Edna Mall, Addis Ababa, Ethiopia",
+    phone: "+251 911 234 567",
+    email: "hello@kitchenedge.et",
   },
   social: {
     facebook: "#",
@@ -23,10 +29,19 @@ export const siteConfig = {
     linkedin: "#",
   },
   shipping: {
-    freeThreshold: 75,
-    message: "Free shipping on orders over $75",
+    freeThreshold: 4000,
+    message: "Free delivery in Addis Ababa on orders over 4,000 ETB",
+    regions: [
+      "Addis Ababa",
+      "Adama",
+      "Hawassa",
+      "Bahir Dar",
+      "Dire Dawa",
+    ],
   },
-  searchPlaceholder: "Search knives, pans, gadgets…",
+  payments: ["Telebirr", "CBE Birr", "Cash on delivery"],
+  searchPlaceholder: "Search knives, mitad, coffee tools…",
+  promoCode: "ADDIS25",
 } as const;
 
 export function pageTitle(page: string): string {
