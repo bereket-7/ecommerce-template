@@ -130,6 +130,9 @@ const PaymentMethod = () => {
             </div>
           </label>
         </div>
+        <p className="text-custom-sm text-dark-4 mt-4">
+          Demo storefront only — no real payments are processed.
+        </p>
       </div>
     </div>
   );
