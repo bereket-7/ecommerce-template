@@ -8,6 +8,8 @@ import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { useAppSelector } from "@/redux/store";
 import { Product } from "@/types/product";
 import { getColorHex } from "@/lib/colorMap";
+import { formatPrice } from "@/lib/formatPrice";
+import { siteConfig } from "@/lib/siteConfig";
 
 const tabs = [
   { id: "tabOne", title: "Description" },
@@ -282,11 +284,11 @@ const ShopDetails = () => {
 
                   <h3 className="font-medium text-custom-1 mb-4.5">
                     <span className="text-sm sm:text-base text-dark">
-                      Price: ${product.price}
+                      {formatPrice(product.discountedPrice)}
                     </span>
-                    <span className="line-through">
+                    <span className="line-through text-dark-4">
                       {" "}
-                      ${product.discountedPrice}{" "}
+                      {formatPrice(product.price)}{" "}
                     </span>
                   </h3>
 
@@ -332,7 +334,7 @@ const ShopDetails = () => {
                           fill="#3C50E0"
                         />
                       </svg>
-                      Free shipping over $75 — Use code: KITCHEN25
+                      {siteConfig.shipping.message} — Use code: {siteConfig.promoCode}
                     </li>
                   </ul>
 
