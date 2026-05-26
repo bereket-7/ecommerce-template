@@ -2,11 +2,12 @@ import React from "react";
 import Cart from "@/components/Cart";
 
 import { Metadata } from "next";
-export const metadata: Metadata = {
-  title: "Cart Page",
-  description: "This is Cart Page for KitchenEdge Template",
-  // other metadata
-};
+import { createPageMetadata } from "@/lib/siteConfig";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Shopping Cart",
+  description: "Review your kitchen tools order in ETB before checkout.",
+});
 
 const CartPage = () => {
   return (
