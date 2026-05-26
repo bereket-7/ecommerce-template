@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "@/lib/formatPrice";
+import { productPath } from "@/lib/products";
 
 const LatestProducts = ({ products }) => {
   return (
@@ -21,7 +22,7 @@ const LatestProducts = ({ products }) => {
 
               <div>
                 <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
-                  <Link href="/shop-details"> {product.title} </Link>
+                  <Link href={productPath(product.slug)}> {product.title} </Link>
                 </h3>
                 <p className="text-custom-sm">Price: {formatPrice(product.discountedPrice)}</p>
               </div>
