@@ -49,9 +49,35 @@ export function pageTitle(page: string): string {
 }
 
 export const defaultMetadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  openGraph: {
+    type: "website",
+    locale: siteConfig.locale.replace("-", "_"),
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
+  },
 };
+
+export function createPageMetadata({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
+  const desc = description ?? siteConfig.description;
+  return {
+    title,
+    description: desc,
+    openGraph: {
+      title: `${title} | ${siteConfig.name}`,
+      description: desc,
+    },
+  };
+}
