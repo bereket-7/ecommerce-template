@@ -1,6 +1,7 @@
 import { selectTotalPrice } from "@/redux/features/cart-slice";
 import { useAppSelector } from "@/redux/store";
 import React from "react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { formatPrice } from "@/lib/formatPrice";
 
@@ -28,8 +29,8 @@ const OrderSummary = () => {
           </div>
 
           {/* <!-- product item --> */}
-          {cartItems.map((item, key) => (
-            <div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between py-5 border-b border-gray-3">
               <div>
                 <p className="text-dark">{item.title}</p>
               </div>
@@ -53,13 +54,16 @@ const OrderSummary = () => {
             </div>
           </div>
 
-          {/* <!-- checkout button --> */}
-          <button
-            type="submit"
-            className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
+          <Link
+            href={cartItems.length > 0 ? "/checkout" : "/shop-with-sidebar"}
+            className={`w-full flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 mt-7.5 ${
+              cartItems.length > 0
+                ? "bg-blue hover:bg-blue-dark"
+                : "bg-gray-4 pointer-events-none"
+            }`}
           >
             Process to Checkout
-          </button>
+          </Link>
         </div>
       </div>
     </div>
