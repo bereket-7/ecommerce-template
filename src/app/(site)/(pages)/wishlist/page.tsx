@@ -1,12 +1,12 @@
 import React from "react";
 import { Wishlist } from "@/components/Wishlist";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/siteConfig";
 
-export const metadata: Metadata = {
-  title: "Wishlist Page",
-  description: "This is Wishlist Page for KitchenEdge Template",
-  // other metadata
-};
+export const metadata: Metadata = createPageMetadata({
+  title: "Wishlist",
+  description: "Save kitchen tools and cookware to your wishlist at KitchenEdge.",
+});
 
 const WishlistPage = () => {
   return (
