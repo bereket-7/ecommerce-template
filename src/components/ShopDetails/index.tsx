@@ -5,11 +5,16 @@ import Image from "next/image";
 import Newsletter from "../Common/Newsletter";
 import RecentlyViewdItems from "./RecentlyViewd";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useAppSelector } from "@/redux/store";
 import { Product } from "@/types/product";
 import { getColorHex } from "@/lib/colorMap";
 import { formatPrice } from "@/lib/formatPrice";
 import { siteConfig } from "@/lib/siteConfig";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { addItemToCart } from "@/redux/features/cart-slice";
+import { addItemToWishlist } from "@/redux/features/wishlist-slice";
+import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import toast from "react-hot-toast";
 
 const tabs = [
   { id: "tabOne", title: "Description" },
@@ -17,56 +22,67 @@ const tabs = [
   { id: "tabThree", title: "Reviews" },
 ];
 
-const ShopDetails = () => {
+type ShopDetailsProps = {
+  product: Product;
+};
+
+const ShopDetails = ({ product }: ShopDetailsProps) => {
   const { openPreviewModal } = usePreviewSlider();
+  const { openCartModal } = useCartModalContext();
+  const dispatch = useDispatch<AppDispatch>();
   const [previewImg, setPreviewImg] = useState(0);
   const [activeColor, setActiveColor] = useState("");
   const [selectedSet, setSelectedSet] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("tabOne");
 
-  const productFromStorage = useAppSelector(
-    (state) => state.productDetailsReducer.value
-  );
-
-  const [product, setProduct] = useState<Product>(productFromStorage);
-
   useEffect(() => {
-    const stored = localStorage.getItem("productDetails");
-    if (stored) {
-      try {
-        setProduct(JSON.parse(stored));
-      } catch {
-        setProduct(productFromStorage);
-      }
-    } else {
-      setProduct(productFromStorage);
-    }
-  }, [productFromStorage]);
+    setPreviewImg(0);
+    setQuantity(1);
+    if (product.colors?.length) setActiveColor(product.colors[0]);
+    if (product.setOptions?.length) setSelectedSet(product.setOptions[0].id);
+    localStorage.setItem("productDetails", JSON.stringify(product));
+  }, [product.id, product]);
 
-  useEffect(() => {
-    if (product?.title) {
-      localStorage.setItem("productDetails", JSON.stringify(product));
-      if (product.colors?.length) setActiveColor(product.colors[0]);
-      if (product.setOptions?.length) setSelectedSet(product.setOptions[0].id);
-    }
-  }, [product]);
-
-  // pass the product here when you get the real data.
   const handlePreviewSlider = () => {
     openPreviewModal();
   };
 
+  const handleAddToCart = () => {
+    dispatch(
+      addItemToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        discountedPrice: product.discountedPrice,
+        quantity,
+        imgs: product.imgs,
+      })
+    );
+    toast.success("Added to cart");
+    openCartModal();
+  };
+
+  const handleAddToWishlist = () => {
+    dispatch(
+      addItemToWishlist({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        discountedPrice: product.discountedPrice,
+        quantity: 1,
+        status: "available",
+        imgs: product.imgs,
+      })
+    );
+    toast.success("Added to wishlist");
+  };
+
   return (
     <>
-      <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
+      <Breadcrumb title={product.title} pages={["shop", product.title]} />
 
-      {!product?.title ? (
-        <p className="py-20 text-center text-dark">
-          Please select a product from the shop.
-        </p>
-      ) : (
-        <>
+      <>
           <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28">
             <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
               <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
@@ -508,15 +524,18 @@ const ShopDetails = () => {
                         </button>
                       </div>
 
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={handleAddToCart}
                         className="inline-flex font-medium text-white bg-blue py-3 px-7 rounded-md ease-out duration-200 hover:bg-blue-dark"
                       >
-                        Purchase Now
-                      </a>
+                        Add to Cart
+                      </button>
 
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={handleAddToWishlist}
+                        aria-label="Add to wishlist"
                         className="flex items-center justify-center w-12 h-12 rounded-md border border-gray-3 ease-out duration-200 hover:text-white hover:bg-dark hover:border-transparent"
                       >
                         <svg
@@ -534,7 +553,7 @@ const ShopDetails = () => {
                             fill=""
                           />
                         </svg>
-                      </a>
+                      </button>
                     </div>
                   </form>
                 </div>
@@ -1176,8 +1195,7 @@ const ShopDetails = () => {
           <RecentlyViewdItems />
 
           <Newsletter />
-        </>
-      )}
+      </>
     </>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Breadcrumb from "../Common/Breadcrumb";
 import CustomSelect from "./CustomSelect";
 import FilterCheckboxDropdown from "./FilterCheckboxDropdown";
@@ -26,6 +26,7 @@ const sortOptions = [
 
 function ShopWithSidebarContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const filterOptions = useMemo(() => getFilterOptions(shopData), []);
 
   const [productStyle, setProductStyle] = useState("grid");
@@ -41,14 +42,19 @@ function ShopWithSidebarContent() {
     filterOptions.priceMax,
   ]);
   const [sort, setSort] = useState<ProductFilters["sort"]>("latest");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const categorySlug = searchParams.get("category");
+    const q = searchParams.get("q") ?? "";
+    setSearch(q);
     if (categorySlug) {
       const name = categorySlugToName(categorySlug);
       if (name) {
         setSelectedCategories([name]);
       }
+    } else {
+      setSelectedCategories([]);
     }
   }, [searchParams]);
 
@@ -60,6 +66,7 @@ function ShopWithSidebarContent() {
     priceMin: priceRange[0],
     priceMax: priceRange[1],
     sort,
+    search: search.trim() || undefined,
   };
 
   const filteredProducts = useMemo(
@@ -82,6 +89,8 @@ function ShopWithSidebarContent() {
     setSelectedColors([]);
     setPriceRange([filterOptions.priceMin, filterOptions.priceMax]);
     setSort("latest");
+    setSearch("");
+    router.push("/shop-with-sidebar");
   };
 
   useEffect(() => {
@@ -99,9 +108,10 @@ function ShopWithSidebarContent() {
     }
 
     return () => {
+      window.removeEventListener("scroll", handleStickyMenu);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  });
+  }, [productSidebar]);
 
   return (
     <>
