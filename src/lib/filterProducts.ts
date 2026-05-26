@@ -60,9 +60,11 @@ export function filterProducts(
     result = result.filter(
       (p) =>
         p.title.toLowerCase().includes(q) ||
+        p.slug.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
         p.category.toLowerCase().includes(q) ||
-        p.brand?.toLowerCase().includes(q) ||
-        p.material?.toLowerCase().includes(q)
+        (p.brand?.toLowerCase().includes(q) ?? false) ||
+        (p.material?.toLowerCase().includes(q) ?? false)
     );
   }
 
